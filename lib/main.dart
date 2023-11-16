@@ -61,12 +61,21 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
   ];
   html.FileReader reader = html.FileReader();
   int counter = 0;
-  Uint8List fontData = Uint8List.fromList(List.empty());
+  Uint8List liberationMono18 = Uint8List.fromList(List.empty());
+  Uint8List liberationMono24 = Uint8List.fromList(List.empty());
+  Uint8List liberationMono40 = Uint8List.fromList(List.empty());
+
   @override
   initState() {
     super.initState();
-    rootBundle.load('assets/fonts/LiberationSerif18.zip').then((fontByteData) {
-      fontData = Uint8List.view(fontByteData.buffer);
+    rootBundle.load('assets/fonts/LiberationMono18.zip').then((fontByteData) {
+      liberationMono18 = Uint8List.view(fontByteData.buffer);
+    });
+    rootBundle.load('assets/fonts/LiberationMono24.zip').then((fontByteData) {
+      liberationMono24 = Uint8List.view(fontByteData.buffer);
+    });
+    rootBundle.load('assets/fonts/LiberationMono40.zip').then((fontByteData) {
+      liberationMono40 = Uint8List.view(fontByteData.buffer);
     });
   }
 
@@ -75,11 +84,11 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
     final image = pw.ImageImage(_image!);
     pdf.addPage(
       pw.Page(
-        margin: const pw.EdgeInsets.only(top: 100),
+        margin: const pw.EdgeInsets.only(top: 1),
         build: (pw.Context context) {
           return pw.Flexible(
             child: pw.Column(
-              mainAxisAlignment: pw.MainAxisAlignment.center,
+              mainAxisAlignment: pw.MainAxisAlignment.start,
               crossAxisAlignment: pw.CrossAxisAlignment.center,
               children: [
                 pw.Image(image),
@@ -136,43 +145,40 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
   }
 
   void _insertDataIntoImage() {
-    img.BitmapFont? font;
-    font = img.BitmapFont.fromZip(fontData);
+    img.BitmapFont? font18 = img.BitmapFont.fromZip(liberationMono18);
+    img.BitmapFont? font24 = img.BitmapFont.fromZip(liberationMono24);
+    img.BitmapFont? font40 = img.BitmapFont.fromZip(liberationMono40);
 
     img.Image baseImage = _image!;
     int xpos = baseImage.width ~/ 100;
     int ypos = baseImage.height ~/ 100;
     img.drawString(
-      y: ypos * 30,
+      y: ypos * 28,
       x: xpos * 63,
       baseImage,
       _nome,
-      font: img.arial24,
+      font: font24,
       color: img.ColorRgb8(0, 0, 0),
     );
 
     img.drawString(
-      y: ypos * 40,
+      y: ypos * 38,
       x: xpos * 63,
       baseImage,
-      'DATA NASC.: $_dtNasc   SEXO: $_sexo',
-      font: font,
+      'Data Nasc.: $_dtNasc           Sexo: ${_sexo![0].toUpperCase()}',
+      font: font18,
       color: img.ColorRgb8(0, 0, 0),
     );
     img.drawString(
-      y: ypos * 50,
+      y: ypos * 48,
       x: xpos * 63,
       baseImage,
       _cns,
-      font: img.arial48,
+      font: font40,
       color: img.ColorRgb8(0, 0, 0),
     );
     drawBarcode(baseImage, Barcode.code128(), _cns,
-        font: img.arial14,
-        y: ypos * 60,
-        x: xpos * 63,
-        width: xpos * 20,
-        height: ypos * 12);
+        y: ypos * 58, x: xpos * 63, width: xpos * 21, height: ypos * 12);
     setState(() {
       loadingImage = false;
       _image = baseImage;
@@ -285,14 +291,14 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
                             decoration:
                                 const InputDecoration(label: Text("Nome")),
                             onChanged: (text) {
-                              _nome = text;
+                              _nome = text.toUpperCase();
                             },
                             validator: (value) {
                               if (value!.isEmpty ||
                                   value.split(' ').length < 2) {
                                 return 'Nome completo é necessário';
                               }
-                              if (value.length > 42) {
+                              if (value.length > 32) {
                                 return 'Nome muito grande, tente abreviar os nomes do meio';
                               }
                               return null;
