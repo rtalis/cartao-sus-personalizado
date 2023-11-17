@@ -59,6 +59,7 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
     'assets/images/7.png',
     'assets/images/8.png',
     'assets/images/9.png',
+    'assets/images/10.png',
   ];
   html.FileReader reader = html.FileReader();
   int counter = 0;
