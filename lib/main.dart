@@ -152,6 +152,9 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
     img.Image baseImage = _image!;
     int xpos = baseImage.width ~/ 100;
     int ypos = baseImage.height ~/ 100;
+    int imageWidth = baseImage.width;
+    int imageHeight = baseImage.height;
+
     img.drawString(
       y: ypos * 28,
       x: xpos * 63,
@@ -179,9 +182,20 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
     );
     drawBarcode(baseImage, Barcode.code128(), _cns,
         y: ypos * 58, x: xpos * 63, width: xpos * 21, height: ypos * 12);
+    int cropLeft = (imageWidth * 0.04).toInt(); // 1.5 cm on the left
+    int cropRight = (imageWidth * 0.035).toInt(); // 2.5 cm on the right
+
+    int croppedWidth = imageWidth - cropLeft - cropRight;
+
+    img.Image croppedImage = img.copyCrop(baseImage,
+        height: imageHeight,
+        width: croppedWidth,
+        y: 0, // Left edge of the crop rectangle
+        x: cropLeft // Top edge of the crop rectangle (starting from the top)
+        );
     setState(() {
       loadingImage = false;
-      _image = baseImage;
+      _image = croppedImage;
     });
   }
 
