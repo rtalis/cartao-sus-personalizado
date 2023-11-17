@@ -157,10 +157,12 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
     int ypos = baseImage.height ~/ 100;
     int imageWidth = baseImage.width;
     int imageHeight = baseImage.height;
-    if (imageWidth / imageHeight < 3.5) borderlessImage = true;
+    (imageWidth / imageHeight) < 3.5
+        ? borderlessImage = true
+        : borderlessImage = false;
 
     img.drawString(
-      y: ypos * 28,
+      y: ypos * 26,
       x: xpos * 63,
       baseImage,
       _nome,
@@ -169,7 +171,7 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
     );
 
     img.drawString(
-      y: ypos * 38,
+      y: ypos * 36,
       x: xpos * 63,
       baseImage,
       'Data Nasc.: $_dtNasc           Sexo: ${_sexo![0].toUpperCase()}',
@@ -177,7 +179,7 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
       color: img.ColorRgb8(0, 0, 0),
     );
     img.drawString(
-      y: ypos * 48,
+      y: ypos * 46,
       x: xpos * 63,
       baseImage,
       _cns,
@@ -185,11 +187,11 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
       color: img.ColorRgb8(0, 0, 0),
     );
     drawBarcode(baseImage, Barcode.code128(), _cns,
-        y: ypos * 58, x: xpos * 63, width: xpos * 21, height: ypos * 12);
+        y: ypos * 56, x: xpos * 63, width: xpos * 21, height: ypos * 12);
     int cropLeft = (imageWidth * 0.04).toInt(); // 1.5 cm on the left
     int cropRight = (imageWidth * 0.035).toInt(); // 2.5 cm on the right
     int croppedWidth = imageWidth - cropLeft - cropRight;
-    if (borderlessImage) {
+    if (!borderlessImage) {
       baseImage = img.copyCrop(baseImage,
           height: imageHeight,
           width: croppedWidth,

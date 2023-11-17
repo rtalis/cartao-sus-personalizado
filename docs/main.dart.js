@@ -49169,15 +49169,16 @@ r=B.b.aS(f.gaj(f),100)
 q=f.gaH(f)
 p=f.gaj(f)
 if(q/p<3.5)l.e=!0
+else l.e=!1
 o=s*63
-A.auw(f,l.y,A.avV(0,0,0),h,k,B.d0,!1,o,r*28)
-A.auw(f,"Data Nasc.: "+l.x+"           Sexo: "+l.z[0].toUpperCase(),A.avV(0,0,0),i,k,B.d0,!1,o,r*38)
-A.auw(f,l.w,A.avV(0,0,0),g,k,B.d0,!1,o,r*48)
+A.auw(f,l.y,A.avV(0,0,0),h,k,B.d0,!1,o,r*26)
+A.auw(f,"Data Nasc.: "+l.x+"           Sexo: "+l.z[0].toUpperCase(),A.avV(0,0,0),i,k,B.d0,!1,o,r*36)
+A.auw(f,l.w,A.avV(0,0,0),g,k,B.d0,!1,o,r*46)
 g=l.w
-A.aTH(f,new A.a3a(!0,!0,!0,!1,!1).Xp(B.c3.cI(g),!1,k,r*12,0,s*21),o,r*58,k,4278190080)
+A.aTH(f,new A.a3a(!0,!0,!0,!1,!1).Xp(B.c3.cI(g),!1,k,r*12,0,s*21),o,r*56,k,4278190080)
 n=B.c.q(q*0.04)
 m=B.c.q(q*0.035)
-if(l.e)j.a=A.aVw(f,p,q-n-m,n,0)
+if(!l.e)j.a=A.aVw(f,p,q-n-m,n,0)
 l.al(new A.amA(j,l))},
 T(a){var s,r,q,p,o,n,m=this,l=null,k=new A.bT(l,t.am),j=A.axF(l),i=t.N,h=t.bN,g=A.aCx(A.aL(["#",A.eY("[0-9]",!0,!1)],i,h),"##/##/####"),f=A.axF(l),e=A.aCx(A.aL(["#",A.eY("[0-9]",!0,!1)],i,h),"### #### #### ####")
 h=m.Q
