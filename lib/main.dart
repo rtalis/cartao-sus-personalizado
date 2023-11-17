@@ -41,6 +41,7 @@ class CnsPersonalizado extends StatefulWidget {
 
 class _CnsPersonalizadoState extends State<CnsPersonalizado> {
   ImageProvider? imageProvider;
+  bool borderlessImage = false;
   bool loadingImage = false;
   img.Image? _image;
   String _cns = "";
@@ -84,7 +85,9 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
     final image = pw.ImageImage(_image!);
     pdf.addPage(
       pw.Page(
-        margin: const pw.EdgeInsets.only(top: 1),
+        margin: borderlessImage
+            ? const pw.EdgeInsets.all(40)
+            : const pw.EdgeInsets.only(top: 1),
         build: (pw.Context context) {
           return pw.Flexible(
             child: pw.Column(
@@ -154,6 +157,7 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
     int ypos = baseImage.height ~/ 100;
     int imageWidth = baseImage.width;
     int imageHeight = baseImage.height;
+    if (imageWidth / imageHeight < 3.5) borderlessImage = true;
 
     img.drawString(
       y: ypos * 28,
@@ -184,18 +188,18 @@ class _CnsPersonalizadoState extends State<CnsPersonalizado> {
         y: ypos * 58, x: xpos * 63, width: xpos * 21, height: ypos * 12);
     int cropLeft = (imageWidth * 0.04).toInt(); // 1.5 cm on the left
     int cropRight = (imageWidth * 0.035).toInt(); // 2.5 cm on the right
-
     int croppedWidth = imageWidth - cropLeft - cropRight;
-
-    img.Image croppedImage = img.copyCrop(baseImage,
-        height: imageHeight,
-        width: croppedWidth,
-        y: 0, // Left edge of the crop rectangle
-        x: cropLeft // Top edge of the crop rectangle (starting from the top)
-        );
+    if (borderlessImage) {
+      baseImage = img.copyCrop(baseImage,
+          height: imageHeight,
+          width: croppedWidth,
+          y: 0, // Left edge of the crop rectangle
+          x: cropLeft // Top edge of the crop rectangle (starting from the top)
+          );
+    }
     setState(() {
       loadingImage = false;
-      _image = croppedImage;
+      _image = baseImage;
     });
   }
 
